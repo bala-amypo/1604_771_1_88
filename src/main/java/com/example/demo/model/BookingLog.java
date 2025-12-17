@@ -19,18 +19,16 @@ import java.time.LocalDateTime;
 public class BookingLog {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // id (Long, PK)
-
-    @ManyToOne // booking (ManyToOne)
+    @GeneratedValue(strategy = GenerationType.IDENTITY
+    private Long id; 
+    @ManyToOne 
     private Booking booking;
 
-    private String logMessage; // logMessage (String)
-
+    private String logMessage; 
     @Column(nullable = false)
-    private LocalDateTime loggedAt; // loggedAt (LocalDateTime)
+    private LocalDateTime loggedAt; 
 
-    // Rule: Timestamp auto-generated (@PrePersist)
+   
     @PrePersist
     protected void onCreate() {
         loggedAt = LocalDateTime.now();
