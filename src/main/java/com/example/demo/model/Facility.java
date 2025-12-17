@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalTime; // Consider using LocalTime for robust time handling
+import java.time.LocalTime; 
 
 @Entity
 @Data
@@ -19,19 +19,15 @@ public class Facility {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // id (Long, PK)
-
+    private Long id; 
     @Column(unique = true, nullable = false)
-    private String name; // name (String, unique)
+    private String name; 
+    private String description;
 
-    private String description; // description
-
-    // Although specified as String HH:mm, LocalTime provides better rule enforcement capabilities
-    private LocalTime openTime; // openTime (String HH:mm -> LocalTime)
     
-    private LocalTime closeTime; // closeTime (String HH:mm -> LocalTime)
+    private LocalTime openTime; 
+    
+    private LocalTime closeTime; 
 
-    // Rule: Open time < Close time. 
-    // This validation must be implemented in a service layer or via a custom Bean Validation constraint 
-    // to compare the two fields before persisting or updating the entity.
+    
 }
