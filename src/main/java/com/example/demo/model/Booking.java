@@ -40,7 +40,4 @@ public class Booking {
     @Column(nullable = false)
     private String status = "CONFIRMED"; // status (String)
 
-    // Rule: End time > Start time, Check conflicts (Throw ConflictException)
-    // These validation and conflict checks should be implemented in the 
-    // application's service layer to handle logic effectively before saving to DB.
 }
