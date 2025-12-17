@@ -11,19 +11,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users") // Good practice to avoid conflict with 'user' reserved keyword in some DBs
-@Data
-@NoArgsConstructor
+@Table(name = "users") 
 @AllArgsConstructor
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Assuming a standard auto-increment strategy
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
 
     private String name;
 
-    @Column(unique = true, nullable = false) // Ensures email uniqueness at the database level
+    @Column(unique = true, nullable = false) 
     private String email;
 
     @Column(nullable = false)
