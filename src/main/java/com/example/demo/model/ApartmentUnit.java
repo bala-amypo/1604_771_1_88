@@ -20,17 +20,16 @@ public class ApartmentUnit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // PK
+    private Long id; 
 
     @Column(unique = true, nullable = false)
-    private String unitNumber; // Unique rule applied via @Column
+    private String unitNumber; 
 
-    @Min(value = 0, message = "Floor must be greater than or equal to 0") // Rule: Floor >= 0
+    @Min(value = 0, message = "Floor must be greater than or equal to 0") 
     @Column(nullable = false)
     private Integer floor;
 
     @OneToOne
-    @JoinColumn(name = "owner_id", referencedColumnName = "id") // Standard JPA mapping for OneToOne
-    private User owner; // OneToOne User
+    @JoinColumn(name = "owner_id", referencedColumnName = "id") 
 
 }
