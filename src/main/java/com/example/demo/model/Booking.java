@@ -1,40 +1,48 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
+
 
 @Entity
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Booking {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; 
-    @ManyToOne 
 
-    @ManyToOne 
-    private User user;
+public static final String STATUS_CONFIRMED = "CONFIRMED";
+public static final String STATUS_CANCELLED = "CANCELLED";
 
-    @Column(nullable = false)
-    private LocalDateTime startTime;
 
-    @Column(nullable = false)
-    private LocalDateTime endTime;
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long id;
 
-   
-    @Column(nullable = false)
-    private String status = "CONFIRMED"; 
 
+@ManyToOne
+private Facility facility;
+
+
+@ManyToOne
+private User user;
+
+
+private LocalDateTime startTime;
+private LocalDateTime endTime;
+
+
+private String status;
+
+
+@OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+private List<BookingLog> logs;
+
+
+public Booking() {}
+
+
+public Booking(Long id, Facility facility, User user, LocalDateTime startTime, LocalDateTime endTime, String status) {
+this.id = id;
+this.facility = facility;
+this.user = user;
 }
