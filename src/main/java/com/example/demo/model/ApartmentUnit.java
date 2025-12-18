@@ -7,67 +7,68 @@ import java.util.Objects;
 public class ApartmentUnit {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+            private Long id;
 
-    private String unitNumber;
+                private String unitNumber;
 
-    private Integer floor;
+                    private Integer floor;
 
-    @OneToOne(mappedBy = "apartmentUnit")
-    private User owner;
+                        @OneToOne(mappedBy = "apartmentUnit")
+                            private User owner;
 
-    public ApartmentUnit() {}
+                                public ApartmentUnit() {}
 
-    public ApartmentUnit(Long id, String unitNumber, Integer floor, User owner) {
-        this.id = id;
-        this.unitNumber = unitNumber;
-        this.floor = floor;
-        this.owner = owner;
-    }
+                                    public ApartmentUnit(Long id, String unitNumber, Integer floor, User owner) {
+                                            this.id = id;
+                                                    this.unitNumber = unitNumber;
+                                                            this.floor = floor;
+                                                                    this.owner = owner;
+                                                                        }
 
-    public Long getId() {
-        return id;
-    }
+                                                                            public Long getId() {
+                                                                                    return id;
+                                                                                        }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+                                                                                            public void setId(Long id) {
+                                                                                                    this.id = id;
+                                                                                                        }
 
-    public String getUnitNumber() {
-        return unitNumber;
-    }
+                                                                                                            public String getUnitNumber() {
+                                                                                                                    return unitNumber;
+                                                                                                                        }
 
-    public void setUnitNumber(String unitNumber) {
-        this.unitNumber = unitNumber;
-    }
+                                                                                                                            public void setUnitNumber(String unitNumber) {
+                                                                                                                                    this.unitNumber = unitNumber;
+                                                                                                                                        }
 
-    public Integer getFloor() {
-        return floor;
-    }
+                                                                                                                                            public Integer getFloor() {
+                                                                                                                                                    return floor;
+                                                                                                                                                        }
 
-    public void setFloor(Integer floor) {
-        this.floor = floor;
-    }
+                                                                                                                                                            public void setFloor(Integer floor) {
+                                                                                                                                                                    this.floor = floor;
+                                                                                                                                                                        }
 
-    public User getOwner() {
-        return owner;
-    }
+                                                                                                                                                                            public User getOwner() {
+                                                                                                                                                                                    return owner;
+                                                                                                                                                                                        }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
+                                                                                                                                                                                            public void setOwner(User owner) {
+                                                                                                                                                                                                    this.owner = owner;
+                                                                                                                                                                                                        }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ApartmentUnit that = (ApartmentUnit) o;
-        return Objects.equals(id, that.id) && Objects.equals(unitNumber, that.unitNumber);
-    }
+                                                                                                                                                                                                            @Override
+                                                                                                                                                                                                                public boolean equals(Object o) {
+                                                                                                                                                                                                                        if (this == o) return true;
+                                                                                                                                                                                                                                if (o == null || getClass() != o.getClass()) return false;
+                                                                                                                                                                                                                                        ApartmentUnit that = (ApartmentUnit) o;
+                                                                                                                                                                                                                                                return Objects.equals(id, that.id) && Objects.equals(unitNumber, that.unitNumber);
+                                                                                                                                                                                                                                                    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, unitNumber);
-    }
-}
+                                                                                                                                                                                                                                                        @Override
+                                                                                                                                                                                                                                                            public int hashCode() {
+                                                                                                                                                                                                                                                                    return Objects.hash(id, unitNumber);
+                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                        
