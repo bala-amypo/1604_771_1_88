@@ -38,5 +38,5 @@ this.closeTime = closeTime;
 }
 
 
-// getters and setters
+
 }
