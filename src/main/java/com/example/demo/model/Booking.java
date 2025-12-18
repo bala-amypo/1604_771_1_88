@@ -35,7 +35,7 @@ private String status;
 
 
 @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
-private List<BookingLog> logs;
+private List<Booking> logs;
 
 
 public Booking() {}
@@ -45,4 +45,11 @@ public Booking(Long id, Facility facility, User user, LocalDateTime startTime, L
 this.id = id;
 this.facility = facility;
 this.user = user;
+this.startTime = startTime;
+this.endTime = endTime;
+this.status = status;
+}
+
+
+
 }
