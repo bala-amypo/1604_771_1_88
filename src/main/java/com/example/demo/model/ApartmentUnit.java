@@ -1,74 +1,39 @@
 package com.example.demo.model;
 
-import javax.persistence.*;
-import java.util.Objects;
+
+import jakarta.persistence.*;
+
 
 @Entity
 public class ApartmentUnit {
 
-    @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-            private Long id;
 
-                private String unitNumber;
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long id;
 
-                    private Integer floor;
 
-                        @OneToOne(mappedBy = "apartmentUnit")
-                            private User owner;
+private String unitNumber;
 
-                                public ApartmentUnit() {}
 
-                                    public ApartmentUnit(Long id, String unitNumber, Integer floor, User owner) {
-                                            this.id = id;
-                                                    this.unitNumber = unitNumber;
-                                                            this.floor = floor;
-                                                                    this.owner = owner;
-                                                                        }
+private Integer floor;
 
-                                                                            public Long getId() {
-                                                                                    return id;
-                                                                                        }
 
-                                                                                            public void setId(Long id) {
-                                                                                                    this.id = id;
-                                                                                                        }
+@OneToOne
+@JoinColumn(name = "owner_id")
+private User owner;
 
-                                                                                                            public String getUnitNumber() {
-                                                                                                                    return unitNumber;
-                                                                                                                        }
 
-                                                                                                                            public void setUnitNumber(String unitNumber) {
-                                                                                                                                    this.unitNumber = unitNumber;
-                                                                                                                                        }
+public ApartmentUnit() {}
 
-                                                                                                                                            public Integer getFloor() {
-                                                                                                                                                    return floor;
-                                                                                                                                                        }
 
-                                                                                                                                                            public void setFloor(Integer floor) {
-                                                                                                                                                                    this.floor = floor;
-                                                                                                                                                                        }
+public ApartmentUnit(Long id, String unitNumber, Integer floor, User owner) {
+this.id = id;
+this.unitNumber = unitNumber;
+this.floor = floor;
+this.owner = owner;
+}
 
-                                                                                                                                                                            public User getOwner() {
-                                                                                                                                                                                    return owner;
-                                                                                                                                                                                        }
 
-                                                                                                                                                                                            public void setOwner(User owner) {
-                                                                                                                                                                                                    this.owner = owner;
-                                                                                                                                                                                                        }
-
-                                                                                                                                                                                                            @Override
-                                                                                                                                                                                                                public boolean equals(Object o) {
-                                                                                                                                                                                                                        if (this == o) return true;
-                                                                                                                                                                                                                                if (o == null || getClass() != o.getClass()) return false;
-                                                                                                                                                                                                                                        ApartmentUnit that = (ApartmentUnit) o;
-                                                                                                                                                                                                                                                return Objects.equals(id, that.id) && Objects.equals(unitNumber, that.unitNumber);
-                                                                                                                                                                                                                                                    }
-
-                                                                                                                                                                                                                                                        @Override
-                                                                                                                                                                                                                                                            public int hashCode() {
-                                                                                                                                                                                                                                                                    return Objects.hash(id, unitNumber);
-                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                        
+// getters and setters
+}
