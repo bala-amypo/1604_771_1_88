@@ -1,45 +1,80 @@
 package com.example.demo.model;
 
-
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.time.LocalDateTime;
-
+import java.util.Objects;
 
 @Entity
 public class BookingLog {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
+    @ManyToOne
+    @JoinColumn(name = "booking_id", nullable = false)
+    private Booking booking;
 
+    private String logMessage;
 
-@ManyToOne
-private Booking booking;
+    private LocalDateTime loggedAt;
 
+    public BookingLog() {}
 
-private String logMessage;
+    public BookingLog(Long id, Booking booking, String logMessage, LocalDateTime loggedAt) {
+        this.id = id;
+        this.booking = booking;
+        this.logMessage = logMessage;
+        this.loggedAt = loggedAt;
+    }
 
+    public Long getId() {
+        return id;
+    }
 
-private LocalDateTime loggedAt;
+    public void setId(Long id) {
+        this.id = id;
+    }
 
+    public Booking getBooking() {
+        return booking;
+    }
 
-@PrePersist
-public void onCreate() {
-this.loggedAt = LocalDateTime.now();
-}
+    public void setBooking(Booking booking) {
+        this.booking = booking;
+    }
 
+    public String getLogMessage() {
+        return logMessage;
+    }
 
-public BookingLog() {}
+    public void setLogMessage(String logMessage) {
+        this.logMessage = logMessage;
+    }
 
+    public LocalDateTime getLoggedAt() {
+        return loggedAt;
+    }
 
-public BookingLog(Long id, Booking booking, String logMessage, LocalDateTime loggedAt) {
-this.id = id;
-this.booking = booking;
-this.logMessage = logMessage;
-this.loggedAt = loggedAt;
-}
+    public void setLoggedAt(LocalDateTime loggedAt) {
+        this.loggedAt = loggedAt;
+    }
 
+    @PrePersist
+    public void onCreate() {
+        this.loggedAt = LocalDateTime.now();
+    }
 
-// getters and setters
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BookingLog that = (BookingLog) o;
+        return Objects.equals(id, that.id) && Objects.equals(booking, that.booking);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, booking);
+    }
 }
