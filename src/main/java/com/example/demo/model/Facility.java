@@ -1,33 +1,42 @@
-package com.example.demo.model;
+package com.example.demo.service;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import java.time.LocalTime; 
+import com.example.demo.model.Facility;
+import com.example.demo.repository.FacilityRepository;
+import com.example.demo.exception.BadRequestException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-@Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class Facility {
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; 
-    @Column(unique = true, nullable = false)
-    private String name; 
-    private String description;
+@Service
+public class FacilityService {
 
-    
-    private LocalTime openTime; 
-    
-    private LocalTime closeTime; 
+    @Autowired
+    private FacilityRepository facilityRepository;
 
-    
+    public void addFacility(Facility f) {
+        if (facilityRepository.findByName(f.getName()).isPresent()) {
+            throw new BadRequestException("Facility with name '" + f.getName() + "' already exists.");
+        }
+
+        validateOpenAndCloseTime(f.getOpenTime(), f.getCloseTime());
+
+        facilityRepository.save(f);
+    }
+
+    public List<Facility> getAllFacilities() {
+        return facilityRepository.findAll();
+    }
+
+    private void validateOpenAndCloseTime(String openTime, String closeTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        LocalTime open = LocalTime.parse(openTime, formatter);
+        LocalTime close = LocalTime.parse(closeTime, formatter);
+
+        if (open.isAfter(close)) {
+            throw new BadRequestException("Open time must be earlier than close time.");
+        }
+    }
 }
