@@ -1,42 +1,42 @@
-package com.example.demo.service;
+package com.example.demo.model;
 
-import com.example.demo.model.Facility;
-import com.example.demo.repository.FacilityRepository;
-import com.example.demo.exception.BadRequestException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import jakarta.persistence.*;
 
-@Service
-public class FacilityService {
 
-    @Autowired
-    private FacilityRepository facilityRepository;
+@Entity
+public class Facility {
 
-    public void addFacility(Facility f) {
-        if (facilityRepository.findByName(f.getName()).isPresent()) {
-            throw new BadRequestException("Facility with name '" + f.getName() + "' already exists.");
-        }
 
-        validateOpenAndCloseTime(f.getOpenTime(), f.getCloseTime());
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long id;
 
-        facilityRepository.save(f);
-    }
 
-    public List<Facility> getAllFacilities() {
-        return facilityRepository.findAll();
-    }
+@Column(unique = true)
+private String name;
 
-    private void validateOpenAndCloseTime(String openTime, String closeTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
-        LocalTime open = LocalTime.parse(openTime, formatter);
-        LocalTime close = LocalTime.parse(closeTime, formatter);
+private String description;
 
-        if (open.isAfter(close)) {
-            throw new BadRequestException("Open time must be earlier than close time.");
-        }
-    }
+
+private String openTime;
+
+
+private String closeTime;
+
+
+public Facility() {}
+
+
+public Facility(Long id, String name, String description, String openTime, String closeTime) {
+this.id = id;
+this.name = name;
+this.description = description;
+this.openTime = openTime;
+this.closeTime = closeTime;
+}
+
+
+// getters and setters
 }
