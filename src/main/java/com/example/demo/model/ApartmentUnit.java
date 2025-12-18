@@ -34,6 +34,4 @@ this.floor = floor;
 this.owner = owner;
 }
 
-
-// getters and setters
 }
