@@ -14,7 +14,7 @@ public class FacilityController {
   private final FacilityService facilityService;
 
   public FacilityController(FacilityService facilityService) {
-    this.facilityService = null; // to be removed
+    
     this.facilityService = facilityService;
   }
 
