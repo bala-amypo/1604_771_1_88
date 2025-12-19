@@ -6,27 +6,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users")
-public class UserController {
+@RequestMapping("/auth")
+public class AuthController {
 
   private final UserService userService;
 
-  public UserController(UserService userService) {
+  public AuthController(UserService userService) {
     this.userService = userService;
   }
 
-  @PostMapping
+  @PostMapping("/register")
   public ResponseEntity<User> register(@RequestBody User user) {
     return ResponseEntity.ok(userService.register(user));
   }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<User> getById(@PathVariable Long id) {
-    return ResponseEntity.ok(userService.getById(id));
-  }
-
-  @GetMapping("/email/{email}")
-  public ResponseEntity<User> getByEmail(@PathVariable String email) {
-    return ResponseEntity.ok(userService.findByEmail(email));
+  @PostMapping("/login")
+  public ResponseEntity<String> login(@RequestBody User user) {
+    // Placeholder for now — later you’ll add JWT here
+    return ResponseEntity.ok("Login successful (JWT logic to be added)");
   }
 }
