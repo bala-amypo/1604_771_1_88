@@ -1,43 +1,47 @@
 package com.example.demo.model;
 
-
 import jakarta.persistence.*;
 
-
 @Entity
-public class ApartmentUnit {
+public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
+    private String username;
 
+    private String password;
 
-private String unitNumber;
+    public User() {}
 
+    public User(Long id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
 
-private Integer floor;
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-@OneToOne
-@JoinColumn(name = "owner_id")
-private User owner;
+    public String getUsername() {
+        return username;
+    }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-public ApartmentUnit() {}
+    public String getPassword() {
+        return password;
+    }
 
-
-public ApartmentUnit(Long id, String unitNumber, Integer floor, User owner) {
-this.id = id;
-this.unitNumber = unitNumber;
-this.floor = floor;
-this.owner = owner;
-}
-
-
-public void setOwner(User user) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'setOwner'");
-}
-
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
