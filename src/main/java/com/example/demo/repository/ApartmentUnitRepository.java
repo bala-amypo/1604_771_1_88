@@ -7,5 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface ApartmentUnitRepository extends JpaRepository<ApartmentUnit, Long> {
-    Optional<ApartmentUnit> findByOwner(User owner);
+  Optional<ApartmentUnit> findByOwner(User owner);
+  boolean existsByUnitNumber(String unitNumber);
 }
