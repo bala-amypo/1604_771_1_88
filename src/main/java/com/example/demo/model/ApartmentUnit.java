@@ -1,43 +1,62 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 
 @Entity
-@Table(name = "apartment_units", uniqueConstraints = @UniqueConstraint(columnNames = "unitNumber"))
 public class ApartmentUnit {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @Column(nullable = false, unique = true)
-  private String unitNumber;
+    private String unitNumber;
 
-  @Column(nullable = false)
-  private Integer floor;
+    private Integer floor;
 
-  @OneToOne
-  @JoinColumn(name = "owner_id")
-  private User owner;
+    @OneToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;
 
-  public ApartmentUnit() {}
+    public ApartmentUnit() {
+    }
 
-  public ApartmentUnit(Long id, String unitNumber, Integer floor, User owner) {
-    this.id = id;
-    this.unitNumber = unitNumber;
-    this.floor = floor;
-    this.owner = owner;
-  }
+    // -------- getters & setters --------
 
-  public Long getId() { return id; }
-  public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-  public String getUnitNumber() { return unitNumber; }
-  public void setUnitNumber(String unitNumber) { this.unitNumber = unitNumber; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-  public Integer getFloor() { return floor; }
-  public void setFloor(Integer floor) { this.floor = floor; }
-
-  public User getOwner() { return owner; }
-  public void setOwner(User owner) { this.owner = owner; }
+    public String getUnitNumber() {
+        return unitNumber;
+    }
+ 
+    public void setUnitNumber(String unitNumber) {
+        this.unitNumber = unitNumber;
+    }
+ 
+    public Integer getFloor() {
+        return floor;
+    }
+ 
+    public void setFloor(Integer floor) {
+        this.floor = floor;
+    }
+ 
+    public User getOwner() {
+        return owner;
+    }
+ 
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
 }
+ 
