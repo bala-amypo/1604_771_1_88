@@ -53,4 +53,9 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+    @Bean
+public JwtAuthenticationFilter jwtAuthenticationFilter(JwtTokenProvider provider) {
+    return new JwtAuthenticationFilter(provider);
+}
+
 }
