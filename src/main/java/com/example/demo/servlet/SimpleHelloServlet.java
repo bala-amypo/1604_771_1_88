@@ -1,11 +1,19 @@
 package com.example.demo.servlet;
 
-import org.springframework.stereotype.Component;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import java.io.IOException;
 
-@Component
-public class SimpleHelloServlet {
+public class SimpleHelloServlet extends HttpServlet {
 
-    public String sayHello() {
-        return "Hello, Apartment Facility Booking System!";
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+        resp.getWriter().write("Hello from Servlet");
+    }
+
+    @Override
+    public String getServletInfo() {
+        return "SimpleHelloServlet";
     }
 }
