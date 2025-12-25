@@ -1,29 +1,45 @@
 package com.example.demo.controller;
 
-
 import com.example.demo.model.Facility;
 import com.example.demo.service.FacilityService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 @RestController
-@RequestMapping("/facilities")
+@RequestMapping("/api/facilities")
 public class FacilityController {
 
+    private final FacilityService facilityService;
 
-private final FacilityService service;
+    public FacilityController(FacilityService facilityService) {
+        this.facilityService = facilityService;
+    }
 
+    @GetMapping
+    public List<Facility> getAll() {
+        return facilityService.getAll();
+    }
 
-public FacilityController(FacilityService s){ service=s; }
+    @GetMapping("/{id}")
+    public Facility getById(@PathVariable Long id) {
+        return facilityService.getById(id);
+    }
 
+    @PostMapping
+    public Facility create(@RequestBody Facility facility) {
+        return facilityService.save(facility);
+    }
 
-@PostMapping
-public ResponseEntity<?> add(@RequestBody Facility f){
-return ResponseEntity.ok(service.addFacility(f));
-}
+    @PutMapping("/{id}")
+    public Facility update(@PathVariable Long id, @RequestBody Facility facility) {
+        facility.setId(id);
+        return facilityService.save(facility);
+    }
 
-
-@GetMapping
-public ResponseEntity<?> all(){ return ResponseEntity.ok(service.getAllFacilities()); }
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable Long id) {
+        facilityService.delete(id);
+        return "Facility deleted with id: " + id;
+    }
 }
