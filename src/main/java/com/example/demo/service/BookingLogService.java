@@ -5,7 +5,8 @@ import java.util.List;
 
 public interface BookingLogService {
 
-    BookingLog addLog(Long bookingId, String message);
-
-    List<BookingLog> getLogsByBooking(Long bookingId);
+    List<BookingLog> getAll();
+    BookingLog getById(Long id);
+    BookingLog save(BookingLog log);
+    void delete(Long id);
 }

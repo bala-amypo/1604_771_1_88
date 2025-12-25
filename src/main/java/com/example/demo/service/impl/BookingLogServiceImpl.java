@@ -1,35 +1,38 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.Booking;
 import com.example.demo.model.BookingLog;
 import com.example.demo.repository.BookingLogRepository;
-import com.example.demo.repository.BookingRepository;
 import com.example.demo.service.BookingLogService;
+import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
+@Service
 public class BookingLogServiceImpl implements BookingLogService {
 
-    private final BookingLogRepository bookingLogRepository;
-    private final BookingRepository bookingRepository;
+    private final BookingLogRepository repo;
 
-    public BookingLogServiceImpl(BookingLogRepository bookingLogRepository,
-                                 BookingRepository bookingRepository) {
-        this.bookingLogRepository = bookingLogRepository;
-        this.bookingRepository = bookingRepository;
+    public BookingLogServiceImpl(BookingLogRepository repo) {
+        this.repo = repo;
     }
 
     @Override
-    public BookingLog addLog(Long bookingId, String message) {
-        Booking booking = bookingRepository.findById(bookingId).orElseThrow();
-        BookingLog log = new BookingLog(null, booking, message, LocalDateTime.now());
-        return bookingLogRepository.save(log);
+    public List<BookingLog> getAll() {
+        return repo.findAll();
     }
 
     @Override
-    public List<BookingLog> getLogsByBooking(Long bookingId) {
-        Booking booking = bookingRepository.findById(bookingId).orElseThrow();
-        return bookingLogRepository.findByBookingOrderByLoggedAtAsc(booking);
+    public BookingLog getById(Long id) {
+        return repo.findById(id).orElse(null);
+    }
+
+    @Override
+    public BookingLog save(BookingLog log) {
+        return repo.save(log);
+    }
+
+    @Override
+    public void delete(Long id) {
+        repo.deleteById(id);
     }
 }
