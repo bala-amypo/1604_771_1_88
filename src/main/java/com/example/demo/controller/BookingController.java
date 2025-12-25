@@ -1,39 +1,38 @@
 package com.example.demo.controller;
 
-
 import com.example.demo.model.Booking;
 import com.example.demo.service.BookingService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 @RestController
-@RequestMapping("/bookings")
+@RequestMapping("/booking")
 public class BookingController {
 
+    private final BookingService service;
 
-private final BookingService service;
+    public BookingController(BookingService service) {
+        this.service = service;
+    }
 
+    @GetMapping
+    public List<Booking> getAll() {
+        return service.getAllBookings();
+    }
 
-public BookingController(BookingService s){ service=s; }
+    @GetMapping("/{id}")
+    public Booking getById(@PathVariable Long id) {
+        return service.getBookingById(id);
+    }
 
+    @PostMapping
+    public Booking create(@RequestBody Booking booking) {
+        return service.saveBooking(booking);
+    }
 
-@PostMapping("/{facilityId}/{userId}")
-public ResponseEntity<?> create(@PathVariable Long facilityId,
-@PathVariable Long userId,
-@RequestBody Booking b){
-return ResponseEntity.ok(service.createBooking(facilityId,userId,b));
-}
-
-
-@PutMapping("/cancel/{bookingId}")
-public ResponseEntity<?> cancel(@PathVariable Long bookingId){
-return ResponseEntity.ok(service.cancelBooking(bookingId));
-}
-
-
-@GetMapping("/{bookingId}")
-public ResponseEntity<?> get(@PathVariable Long bookingId){
-return ResponseEntity.ok(service.getBooking(bookingId));
-}
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        service.deleteBooking(id);
+    }
 }
