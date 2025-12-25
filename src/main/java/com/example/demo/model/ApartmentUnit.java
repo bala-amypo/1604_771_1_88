@@ -26,8 +26,6 @@ public class ApartmentUnit {
         this.floor = floor;
         this.owner = owner;
     }
-
-    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
