@@ -1,36 +1,39 @@
 package com.example.demo.controller;
 
+
 import com.example.demo.model.Booking;
 import com.example.demo.service.BookingService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping("/bookings")
 public class BookingController {
 
-  private final BookingService bookingService;
 
-  public BookingController(BookingService bookingService) {
-    this.bookingService = bookingService;
-  }
+private final BookingService service;
 
-  @PostMapping("/{facilityId}/{userId}")
-  public ResponseEntity<Booking> create(
-      @PathVariable Long facilityId,
-      @PathVariable Long userId,
-      @RequestBody Booking booking
-  ) {
-    return ResponseEntity.ok(bookingService.createBooking(facilityId, userId, booking));
-  }
 
-  @PutMapping("/cancel/{bookingId}")
-  public ResponseEntity<Booking> cancel(@PathVariable Long bookingId) {
-    return ResponseEntity.ok(bookingService.cancelBooking(bookingId));
-  }
+public BookingController(BookingService s){ service=s; }
 
-  @GetMapping("/{bookingId}")
-  public ResponseEntity<Booking> get(@PathVariable Long bookingId) {
-    return ResponseEntity.ok(bookingService.getBooking(bookingId));
-  }
+
+@PostMapping("/{facilityId}/{userId}")
+public ResponseEntity<?> create(@PathVariable Long facilityId,
+@PathVariable Long userId,
+@RequestBody Booking b){
+return ResponseEntity.ok(service.createBooking(facilityId,userId,b));
+}
+
+
+@PutMapping("/cancel/{bookingId}")
+public ResponseEntity<?> cancel(@PathVariable Long bookingId){
+return ResponseEntity.ok(service.cancelBooking(bookingId));
+}
+
+
+@GetMapping("/{bookingId}")
+public ResponseEntity<?> get(@PathVariable Long bookingId){
+return ResponseEntity.ok(service.getBooking(bookingId));
+}
 }
