@@ -1,35 +1,34 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "bookings")
 public class Booking {
+    public static final String STATUS_CONFIRMED = "CONFIRMED";
+    public static final String STATUS_CANCELLED = "CANCELLED";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Facility facility;
+    private User user;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private String status;
 
-    private String bookingDate;
-
-    @ManyToOne
-    @JoinColumn(name = "apartment_id")
-    private ApartmentUnit apartment;
-
-    public Booking() {}
-
-    public Booking(String bookingDate, ApartmentUnit apartment) {
-        this.bookingDate = bookingDate;
-        this.apartment = apartment;
+    public Booking(Long id, Facility facility, User user,
+                   LocalDateTime startTime, LocalDateTime endTime, String status) {
+        this.id = id;
+        this.facility = facility;
+        this.user = user;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.status = status;
     }
 
-    // Getters & Setters
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Facility getFacility(){ return facility; }
+    public User getUser(){ return user; }
+    public String getStatus(){ return status; }
 
-    public String getBookingDate() { return bookingDate; }
-    public void setBookingDate(String bookingDate) { this.bookingDate = bookingDate; }
-
-    public ApartmentUnit getApartment() { return apartment; }
-    public void setApartment(ApartmentUnit apartment) { this.apartment = apartment; }
+    public void cancel() {
+        this.status = STATUS_CANCELLED;
+    }
 }
