@@ -2,10 +2,6 @@ package com.example.demo.servlet;
 
 import org.springframework.stereotype.Component;
 
-/**
- * Dummy servlet class so that tests compile.
- * Update logic based on what your test expects.
- */
 @Component
 public class ApartmentFacilityBookingServlet {
 
