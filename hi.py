@@ -17,6 +17,6 @@ while True:
                 dirs_exist_ok=True
             )
             print("Folder Captured!")
-            except Exception as e:
-                print(f"Error:{e}")
-                time.sleep(0.5)
+        except Exception as e:
+            print(f"Error:{e}")
+        time.sleep(0.5)
