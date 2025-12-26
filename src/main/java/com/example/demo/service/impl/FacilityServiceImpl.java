@@ -1,6 +1,5 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.Facility;
 import com.example.demo.repository.FacilityRepository;
 import com.example.demo.service.FacilityService;
@@ -16,27 +15,15 @@ public class FacilityServiceImpl implements FacilityService {
     private final FacilityRepository facilityRepository;
 
     @Override
-    public List<Facility> getAll() {
-        List<Facility> facilities = facilityRepository.findAll();
-        return facilities != null ? facilities : List.of();
+    public Facility addFacility(Facility facility) {
+        facilityRepository.findByName(facility.getName()).ifPresent(f -> {
+            throw new RuntimeException("Facility already exists");
+        });
+        return facilityRepository.save(facility);
     }
 
     @Override
-    public Facility create(Facility facility) {
-
-        if (facility == null || facility.getOpenTime() == null || facility.getCloseTime() == null) {
-            throw new BadRequestException("time fields required");
-        }
-
-        // 🔥 FIXED: using Optional properly
-        if (facilityRepository.findByName(facility.getName()).isPresent()) {
-            throw new BadRequestException("duplicate facility");
-        }
-
-        if (facility.getOpenTime().compareTo(facility.getCloseTime()) >= 0) {
-            throw new BadRequestException("time invalid: open must be less than close");
-        }
-
-        return facilityRepository.save(facility);
+    public List<Facility> getAllFacilities() {
+        return facilityRepository.findAll();
     }
 }
