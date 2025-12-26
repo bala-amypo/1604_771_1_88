@@ -1,29 +1,31 @@
 package com.example.demo.security;
 
+import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
 
 @Component
 public class JwtTokenProvider {
 
-    public JwtTokenProvider() {}
+    private final String SECRET_KEY = "SECRET_KEY_1234";
 
-    public String generateToken(String subject) {
-        return "TOKEN_" + subject;
+    public String getUsernameFromJwt(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY.getBytes())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 
-    public boolean validateToken(String token) {
-        return token != null && token.startsWith("TOKEN_");
-    }
-
-    public String getUserIdFromToken(String token) {
-        return token.replace("TOKEN_", "");
-    }
-
-    public String getEmailFromToken(String token) {
-        return getUserIdFromToken(token);
-    }
-
-    public String getRoleFromToken(String token) {
-        return "USER";
+    public boolean validateJwt(String token) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(SECRET_KEY.getBytes())
+                    .build()
+                    .parseClaimsJws(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
     }
 }
