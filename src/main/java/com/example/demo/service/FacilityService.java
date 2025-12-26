@@ -4,7 +4,6 @@ import com.example.demo.model.Facility;
 import java.util.List;
 
 public interface FacilityService {
-
-    Facility addFacility(Facility facility);   // ⭐ required by tests
-    List<Facility> getAllFacilities();         // ⭐ required by tests
+    Facility addFacility(Facility facility);
+    List<Facility> getAllFacilities();
 }
