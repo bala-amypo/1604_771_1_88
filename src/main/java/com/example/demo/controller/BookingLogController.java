@@ -1,38 +1,31 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.Booking;
 import com.example.demo.model.BookingLog;
 import com.example.demo.service.BookingLogService;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/booking-log")
+@RequestMapping("/api/logs")
 public class BookingLogController {
 
-    private final BookingLogService service;
+    private final BookingLogService bookingLogService;
 
-    public BookingLogController(BookingLogService service) {
-        this.service = service;
+    public BookingLogController(BookingLogService bookingLogService) {
+        this.bookingLogService = bookingLogService;
+    }
+
+    @PostMapping("/create")
+    public BookingLog createLog(@RequestBody Booking booking) {
+        BookingLog log = new BookingLog(booking, "CREATED", LocalDateTime.now());
+        return bookingLogService.saveLog(log);
     }
 
     @GetMapping
-    public List<BookingLog> getAll() {
-        return service.getAll();
-    }
-
-    @GetMapping("/{id}")
-    public BookingLog getById(@PathVariable Long id) {
-        return service.getById(id);
-    }
-
-    @PostMapping
-    public BookingLog create(@RequestBody BookingLog bookingLog) {
-        return service.save(bookingLog);
-    }
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    public List<BookingLog> getAllLogs() {
+        return bookingLogService.getAllLogs();
     }
 }

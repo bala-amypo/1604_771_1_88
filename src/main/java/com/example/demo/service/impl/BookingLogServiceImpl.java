@@ -10,29 +10,19 @@ import java.util.List;
 @Service
 public class BookingLogServiceImpl implements BookingLogService {
 
-    private final BookingLogRepository repo;
+    private final BookingLogRepository bookingLogRepository;
 
-    public BookingLogServiceImpl(BookingLogRepository repo) {
-        this.repo = repo;
+    public BookingLogServiceImpl(BookingLogRepository bookingLogRepository) {
+        this.bookingLogRepository = bookingLogRepository;
     }
 
     @Override
-    public List<BookingLog> getAll() {
-        return repo.findAll();
+    public BookingLog saveLog(BookingLog log) {
+        return bookingLogRepository.save(log);
     }
 
     @Override
-    public BookingLog getById(Long id) {
-        return repo.findById(id).orElse(null);
-    }
-
-    @Override
-    public BookingLog save(BookingLog log) {
-        return repo.save(log);
-    }
-
-    @Override
-    public void delete(Long id) {
-        repo.deleteById(id);
+    public List<BookingLog> getAllLogs() {
+        return bookingLogRepository.findAll();
     }
 }
