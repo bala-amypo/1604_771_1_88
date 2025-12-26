@@ -15,33 +15,24 @@ public class FacilityServiceImpl implements FacilityService {
 
     private final FacilityRepository facilityRepository;
 
-    /**
-     * Return all facilities (never return null)
-     */
     @Override
     public List<Facility> getAll() {
         List<Facility> facilities = facilityRepository.findAll();
         return facilities != null ? facilities : List.of();
     }
 
-    /**
-     * Create facility with validation
-     */
     @Override
     public Facility create(Facility facility) {
 
-        if (facility == null
-                || facility.getOpenTime() == null
-                || facility.getCloseTime() == null) {
+        if (facility == null || facility.getOpenTime() == null || facility.getCloseTime() == null) {
             throw new BadRequestException("time fields required");
         }
 
-        // duplicate name check (❗tests look for "duplicate")
+        // 🔥 FIXED: using Optional properly
         if (facilityRepository.findByName(facility.getName()).isPresent()) {
             throw new BadRequestException("duplicate facility");
         }
 
-        // time validation HH:mm → open must be less than close (❗tests look for "time")
         if (facility.getOpenTime().compareTo(facility.getCloseTime()) >= 0) {
             throw new BadRequestException("time invalid: open must be less than close");
         }
