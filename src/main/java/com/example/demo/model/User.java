@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
 
     @Id
@@ -18,12 +20,4 @@ public class User {
     private String password;
     private String role;
 
-    // TESTS REQUIRE THIS EXTRA CONSTRUCTOR:
-    public User(Long id, String name, String email, String password, String role) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
 }
