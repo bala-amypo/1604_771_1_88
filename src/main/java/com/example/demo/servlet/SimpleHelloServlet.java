@@ -5,7 +5,8 @@ import java.io.IOException;
 
 public class SimpleHelloServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    
+public void doGet(...)(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.getWriter().write("Hello from Servlet");
     }
 

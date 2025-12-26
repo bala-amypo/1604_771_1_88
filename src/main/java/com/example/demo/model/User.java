@@ -1,11 +1,12 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 @Entity
 @Data
-@Table(name = "user")
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -16,4 +17,13 @@ public class User {
     private String email;
     private String password;
     private String role;
+
+    // TESTS REQUIRE THIS EXTRA CONSTRUCTOR:
+    public User(Long id, String name, String email, String password, String role) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
 }

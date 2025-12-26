@@ -16,13 +16,23 @@ public class FacilityServiceImpl implements FacilityService {
     }
 
     @Override
-    public List<Facility> getAll() {
-        return repo.findAll();
+    public Facility addFacility(Facility facility) {
+        return repo.save(facility);
     }
 
     @Override
     public Facility getById(Long id) {
         return repo.findById(id).orElse(null);
+    }
+
+    @Override
+    public Facility findByName(String name) {
+        return repo.findByName(name);
+    }
+
+    @Override
+    public List<Facility> getAllFacilities() {
+        return repo.findAll();
     }
 
     @Override

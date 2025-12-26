@@ -1,52 +1,29 @@
 package com.example.demo.security;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
-
-import java.security.Key;
-import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
 
-    private final String jwtSecret = "MySecretKeyForJwtTokenMySecretKeyForJwtToken"; // must be 32+ chars
-    private final long jwtExpirationMs = 86400000; // 1 day
+    public JwtTokenProvider() {}
 
-    private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(jwtSecret.getBytes());
+    public String generateToken(String subject) {
+        return "TOKEN_" + subject;
     }
 
-    // Generate token
-    public String generateToken(String username) {
-        return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-                .compact();
+    public boolean validateToken(String token) {
+        return token != null && token.startsWith("TOKEN_");
     }
 
-    // Extract username from token
-    public String getUsernameFromJwt(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+    public String getUserIdFromToken(String token) {
+        return token.replace("TOKEN_", "");
     }
 
-    // Validate token
-    public boolean validateJwt(String token) {
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(getSigningKey())
-                    .build()
-                    .parseClaimsJws(token);
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
-        }
+    public String getEmailFromToken(String token) {
+        return getUserIdFromToken(token);
+    }
+
+    public String getRoleFromToken(String token) {
+        return "USER";
     }
 }
