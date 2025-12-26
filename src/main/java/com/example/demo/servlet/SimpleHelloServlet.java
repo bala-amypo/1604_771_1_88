@@ -6,8 +6,24 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class SimpleHelloServlet extends HttpServlet {
+
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.getWriter().write("Hello from SimpleHelloServlet!");
+    public void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+
+        resp.setStatus(HttpServletResponse.SC_OK);
+        resp.setContentType("text/plain");
+        resp.getWriter().write("Hello from Simple Servlet");
+    }
+
+    @Override
+    public void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+        resp.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    @Override
+    public String getServletInfo() {
+        return "SimpleHelloServlet";
     }
 }
