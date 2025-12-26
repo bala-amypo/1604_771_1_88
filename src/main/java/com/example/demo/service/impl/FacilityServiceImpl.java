@@ -6,11 +6,23 @@ import com.example.demo.service.FacilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FacilityServiceImpl implements FacilityService {
 
     @Autowired
     private FacilityRepository facilityRepository;
+
+    @Override
+    public Facility addFacility(Facility facility) {
+        return facilityRepository.save(facility);
+    }
+
+    @Override
+    public List<Facility> getAllFacilities() {
+        return facilityRepository.findAll();
+    }
 
     @Override
     public String getFacilityTimings(Long id) {
@@ -20,9 +32,7 @@ public class FacilityServiceImpl implements FacilityService {
             return "Facility not found";
         }
 
-        String open = facility.getOpenTime().toString();
-        String close = facility.getCloseTime().toString();
-
-        return "Open: " + open + " | Close: " + close;
+        return "Open: " + facility.getOpenTime().toString() +
+               " | Close: " + facility.getCloseTime().toString();
     }
 }
