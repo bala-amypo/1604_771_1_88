@@ -1,28 +1,21 @@
-package com.example.demo.service.impl;
-
-import com.example.demo.model.BookingLog;
-import com.example.demo.repository.BookingLogRepository;
-import com.example.demo.service.BookingLogService;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
 @Service
 public class BookingLogServiceImpl implements BookingLogService {
+    private final BookingLogRepository logRepo;
+    private final BookingRepository bookingRepo;
 
-    private final BookingLogRepository bookingLogRepository;
-
-    public BookingLogServiceImpl(BookingLogRepository bookingLogRepository) {
-        this.bookingLogRepository = bookingLogRepository;
+    public BookingLogServiceImpl(BookingLogRepository l, BookingRepository b){
+        this.logRepo=l; this.bookingRepo=b;
     }
 
     @Override
-    public BookingLog saveLog(BookingLog log) {
-        return bookingLogRepository.save(log);
+    public BookingLog addLog(Long bookingId, String msg){
+        Booking b = bookingRepo.findById(bookingId).orElseThrow();
+        return logRepo.save(new BookingLog(null,b,msg,LocalDateTime.now()));
     }
 
     @Override
-    public List<BookingLog> getAllLogs() {
-        return bookingLogRepository.findAll();
+    public List<BookingLog> getLogsByBooking(Long id){
+        Booking b = bookingRepo.findById(id).orElseThrow();
+        return logRepo.findByBookingOrderByLoggedAtAsc(b);
     }
 }
