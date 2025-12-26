@@ -1,14 +1,10 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.ConflictException;
-import com.example.demo.model.Booking;
-import com.example.demo.model.Facility;
-import com.example.demo.model.User;
-import com.example.demo.repository.BookingRepository;
-import com.example.demo.repository.FacilityRepository;
-import com.example.demo.repository.UserRepository;
-import com.example.demo.service.BookingLogService;
+import com.example.demo.model.*;
+import com.example.demo.repository.*;
 import com.example.demo.service.BookingService;
+import com.example.demo.service.BookingLogService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,77 +12,55 @@ import java.util.List;
 @Service
 public class BookingServiceImpl implements BookingService {
 
-    private final BookingRepository bookingRepo;
-    private final FacilityRepository facilityRepo;
-    private final UserRepository userRepo;
-    private final BookingLogService logService;
+    private final BookingRepository bookingRepository;
+    private final FacilityRepository facilityRepository;
+    private final UserRepository userRepository;
+    private final BookingLogService bookingLogService;
 
-    public BookingServiceImpl(BookingRepository bookingRepo,
-                              FacilityRepository facilityRepo,
-                              UserRepository userRepo,
-                              BookingLogService logService) {
-        this.bookingRepo = bookingRepo;
-        this.facilityRepo = facilityRepo;
-        this.userRepo = userRepo;
-        this.logService = logService;
+    public BookingServiceImpl(BookingRepository bookingRepository,
+                              FacilityRepository facilityRepository,
+                              UserRepository userRepository,
+                              BookingLogService bookingLogService) {
+        this.bookingRepository = bookingRepository;
+        this.facilityRepository = facilityRepository;
+        this.userRepository = userRepository;
+        this.bookingLogService = bookingLogService;
     }
 
     @Override
     public Booking createBooking(Long facilityId, Long userId, Booking booking) {
-        Facility facility = facilityRepo.findById(facilityId).orElseThrow();
-        User user = userRepo.findById(userId).orElseThrow();
 
-        boolean conflict = !bookingRepo
-                .findByFacilityAndStartTimeLessThanAndEndTimeGreaterThan(
-                        facility, booking.getStartTime(), booking.getEndTime())
-                .isEmpty();
+        Facility facility = facilityRepository.findById(facilityId).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
 
-        if (conflict) {
-            throw new ConflictException("Booking conflict!");
+        List<Booking> conflicts =
+                bookingRepository.findByFacilityAndStartTimeLessThanAndEndTimeGreaterThan(
+                        facility, booking.getEndTime(), booking.getStartTime());
+
+        if (!conflicts.isEmpty()) {
+            throw new ConflictException("conflict detected");
         }
 
         booking.setFacility(facility);
         booking.setUser(user);
         booking.setStatus(Booking.STATUS_CONFIRMED);
-        Booking saved = bookingRepo.save(booking);
 
-        logService.addLog(saved.getId(), "Created");
+        Booking saved = bookingRepository.save(booking);
+        bookingLogService.addLog(saved.getId(), "Created");
+
         return saved;
     }
 
     @Override
-    public Booking cancelBooking(Long id) {
-        Booking booking = bookingRepo.findById(id).orElseThrow();
+    public Booking cancelBooking(Long bookingId) {
+        Booking booking = bookingRepository.findById(bookingId).orElse(null);
         booking.setStatus(Booking.STATUS_CANCELLED);
-        bookingRepo.save(booking);
-        logService.addLog(id, "Cancelled");
-        return booking;
+        bookingLogService.addLog(bookingId, "Cancelled");
+        return bookingRepository.save(booking);
     }
 
     @Override
-    public Booking getBooking(Long id) {
-        return bookingRepo.findById(id).orElse(null);
-    }
-
-    @Override
-    public void deleteBooking(Long id) {
-        bookingRepo.deleteById(id);
-    }
-
-    // ---- Extra methods for controller compatibility ----
-
-    @Override
-    public List<Booking> getAllBookings() {
-        return bookingRepo.findAll();
-    }
-
-    @Override
-    public Booking saveBooking(Booking booking) {
-        return bookingRepo.save(booking);
-    }
-
-    @Override
-    public Booking getBookingById(Long id) {
-        return bookingRepo.findById(id).orElse(null);
+    public Booking getBooking(Long bookingId) {
+        return bookingRepository.findById(bookingId).orElse(null);
     }
 }
