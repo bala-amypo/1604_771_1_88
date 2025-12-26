@@ -5,12 +5,13 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter @Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookingLog {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne

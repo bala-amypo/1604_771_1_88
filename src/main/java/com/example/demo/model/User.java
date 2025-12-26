@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -16,6 +18,6 @@ public class User {
     private String password;
     private String role;
 
-    @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "owner")
     private ApartmentUnit apartmentUnit;
 }
