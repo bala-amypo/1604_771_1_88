@@ -1,12 +1,11 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "user")
 public class User {
 
     @Id
@@ -17,7 +16,4 @@ public class User {
     private String email;
     private String password;
     private String role;
-
-    @OneToOne(mappedBy = "owner")
-    private ApartmentUnit apartmentUnit;
 }
