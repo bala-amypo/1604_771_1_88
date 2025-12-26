@@ -1,27 +1,29 @@
-package com.example.demo.service.impl;
+package com.example.demo.servlet;
 
-import com.example.demo.model.User;
-import com.example.demo.repository.UserRepository;
-import com.example.demo.service.UserService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
-@Service
-@RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
-
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+public class SimpleHelloServlet extends HttpServlet {
 
     @Override
-    public User register(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+    public void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+
+        resp.setStatus(HttpServletResponse.SC_OK);
+        resp.setContentType("text/plain");
+        resp.getWriter().write("Hello from Simple Servlet");
     }
 
     @Override
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email).orElse(null);
+    public void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+        resp.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    @Override
+    public String getServletInfo() {
+        return "SimpleHelloServlet";
     }
 }
