@@ -1,9 +1,12 @@
 package com.example.demo.model;
+import jakarta.persistence.*;
 
 
 import java.time.LocalDateTime;
-
+@Entity
 public class BookingLog {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Booking booking;
     private String logMessage;
