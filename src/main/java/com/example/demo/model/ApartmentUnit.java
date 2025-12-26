@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Table(name = "apartment_units")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,10 +14,12 @@ public class ApartmentUnit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String unitNumber;
+
     private Integer floor;
 
     @OneToOne
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "user_id")
     private User owner;
 }

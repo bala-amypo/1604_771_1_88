@@ -1,38 +1,38 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.ApartmentUnit;
+import com.example.demo.model.User;
 import com.example.demo.repository.ApartmentUnitRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.ApartmentUnitService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
+@RequiredArgsConstructor
 public class ApartmentUnitServiceImpl implements ApartmentUnitService {
 
-    private final ApartmentUnitRepository repository;
+    private final ApartmentUnitRepository apartmentRepo;
+    private final UserRepository userRepo;
 
-    public ApartmentUnitServiceImpl(ApartmentUnitRepository repository) {
-        this.repository = repository;
+    @Override
+    public ApartmentUnit assignUnitToUser(Long userId, ApartmentUnit unit) {
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new BadRequestException("user not found"));
+
+        unit.setOwner(user);
+        ApartmentUnit saved = apartmentRepo.save(unit);
+        user.setApartmentUnit(saved);
+        return saved;
     }
 
     @Override
-    public List<ApartmentUnit> getAllUnits() {
-        return repository.findAll();
-    }
+    public ApartmentUnit getUnitByUser(Long userId) {
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new BadRequestException("user not found"));
 
-    @Override
-    public ApartmentUnit getUnitById(Long id) {
-        return repository.findById(id).orElse(null);
-    }
-
-    @Override
-    public ApartmentUnit saveUnit(ApartmentUnit unit) {
-        return repository.save(unit);
-    }
-
-    @Override
-    public void deleteUnit(Long id) {
-        repository.deleteById(id);
+        return apartmentRepo.findByOwner(user)
+                .orElseThrow(() -> new BadRequestException("no unit found"));
     }
 }

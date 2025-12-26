@@ -4,11 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter
-@Setter
+@Table(name = "users")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class User {
 
     @Id
@@ -16,8 +15,14 @@ public class User {
     private Long id;
 
     private String name;
-    private String email;
-    private String password;
-    private String role;
 
+    @Column(unique = true)
+    private String email;
+
+    private String password;
+
+    private String role = "RESIDENT";
+
+    @OneToOne(mappedBy = "owner")
+    private ApartmentUnit apartmentUnit;
 }
