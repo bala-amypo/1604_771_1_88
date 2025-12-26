@@ -3,11 +3,11 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@Table(name = "apartment_units")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "apartment_units")
 public class ApartmentUnit {
 
     @Id
@@ -20,6 +20,6 @@ public class ApartmentUnit {
     private Integer floor;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "owner_id")
     private User owner;
 }

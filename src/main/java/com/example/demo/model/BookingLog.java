@@ -2,12 +2,14 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "booking_logs")
 public class BookingLog {
 
     @Id
@@ -18,8 +20,10 @@ public class BookingLog {
     private Booking booking;
 
     private String logMessage;
+
     private LocalDateTime loggedAt;
 
+    // Required for test t27
     @PrePersist
     public void onCreate() {
         this.loggedAt = LocalDateTime.now();
