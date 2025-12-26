@@ -1,11 +1,25 @@
 package com.example.demo.model;
-import lombok.Data;
-import java.time.LocalTime;
+
+import jakarta.persistence.*;
+import lombok.*;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "facilities")
 public class Facility {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true)
     private String name;
-    private LocalTime openTime;
-    private LocalTime closeTime;
+
+    private String description;
+
+    private String openTime;
+
+    private String closeTime;
 }
