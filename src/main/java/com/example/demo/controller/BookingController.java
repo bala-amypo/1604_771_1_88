@@ -4,10 +4,8 @@ import com.example.demo.model.Booking;
 import com.example.demo.service.BookingService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/booking")
+@RequestMapping("/bookings")
 public class BookingController {
 
     private final BookingService service;
@@ -16,23 +14,20 @@ public class BookingController {
         this.service = service;
     }
 
-    @GetMapping
-    public List<Booking> getAll() {
-        return service.getAllBookings();
+    @PostMapping("/{facilityId}/{userId}")
+    public Booking create(@PathVariable Long facilityId,
+                          @PathVariable Long userId,
+                          @RequestBody Booking booking) {
+        return service.createBooking(facilityId, userId, booking);
     }
 
-    @GetMapping("/{id}")
-    public Booking getById(@PathVariable Long id) {
-        return service.getBookingById(id);
+    @PutMapping("/cancel/{bookingId}")
+    public Booking cancel(@PathVariable Long bookingId) {
+        return service.cancelBooking(bookingId);
     }
 
-    @PostMapping
-    public Booking create(@RequestBody Booking booking) {
-        return service.saveBooking(booking);
-    }
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.deleteBooking(id);
+    @GetMapping("/{bookingId}")
+    public Booking get(@PathVariable Long bookingId) {
+        return service.getBooking(bookingId);
     }
 }
