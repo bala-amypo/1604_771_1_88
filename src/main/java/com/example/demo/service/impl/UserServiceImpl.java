@@ -1,29 +1,24 @@
-package com.example.demo.servlet;
+package com.example.demo.service.impl;
 
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import com.example.demo.model.User;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public class SimpleHelloServlet extends HttpServlet {
+@Service
+public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
-
-        resp.setStatus(HttpServletResponse.SC_OK);
-        resp.setContentType("text/plain");
-        resp.getWriter().write("Hello from Simple Servlet");
+    public User registerUser(User user) {
+        return userRepository.save(user);
     }
 
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
-        resp.setStatus(HttpServletResponse.SC_OK);
-    }
-
-    @Override
-    public String getServletInfo() {
-        return "SimpleHelloServlet";
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
     }
 }
