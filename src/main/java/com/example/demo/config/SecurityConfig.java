@@ -43,16 +43,20 @@ public class SecurityConfig {
     public JwtAuthenticationEntryPoint authenticationEntryPoint() {
         return new JwtAuthenticationEntryPoint();
     }
+
     @Bean
-public WebMvcConfigurer corsConfigurer() {
-    return new WebMvcConfigurer() {
-        @Override
-        public void addCorsMappings(CorsRegistry registry) {
-            registry.addMapping("/**")
-                    .allowedOrigins("*")
-                    .allowedMethods("GET","POST","PUT","DELETE","OPTIONS");
-        }
-    };
-}
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/auth/**").permitAll()   // <-- allow login/register
+                .anyRequest().authenticated()
+            )
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            );
+
+        return http.build();
+    }
 
 }
