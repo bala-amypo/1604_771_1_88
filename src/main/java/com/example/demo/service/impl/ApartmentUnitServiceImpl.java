@@ -1,12 +1,13 @@
 package com.example.demo.service.impl;
 
+import org.springframework.stereotype.Service;
+
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.ApartmentUnit;
 import com.example.demo.model.User;
 import com.example.demo.repository.ApartmentUnitRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.ApartmentUnitService;
-import org.springframework.stereotype.Service;
-
 @Service
 public class ApartmentUnitServiceImpl implements ApartmentUnitService {
 
@@ -21,14 +22,19 @@ public class ApartmentUnitServiceImpl implements ApartmentUnitService {
 
     @Override
     public ApartmentUnit assignUnitToUser(Long userId, ApartmentUnit unit) {
-        User user = userRepository.findById(userId).orElse(null);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestException("User not found"));
         unit.setOwner(user);
-        return apartmentUnitRepository.save(unit);
+        ApartmentUnit saved = apartmentUnitRepository.save(unit);
+        user.setApartmentUnit(saved);
+        return saved;
     }
 
     @Override
     public ApartmentUnit getUnitByUser(Long userId) {
-        User user = userRepository.findById(userId).orElse(null);
-        return apartmentUnitRepository.findByOwner(user).orElse(null);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BadRequestException("User not found"));
+        return apartmentUnitRepository.findByOwner(user)
+                .orElseThrow(() -> new BadRequestException("Unit not found"));
     }
 }
