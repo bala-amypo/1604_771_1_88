@@ -3,7 +3,7 @@
     
     <test name="Demo Tests">
         <classes>
-            <class name="com.example.demo.DemoTest"/>
+            <class name="com.example.demo.ApartmentFacilityBookingSystemTest"/>
         </classes>
     </test>
 
