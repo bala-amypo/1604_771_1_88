@@ -47,19 +47,5 @@ public class SecurityConfig {
         return new JwtAuthenticationEntryPoint();
     }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**").permitAll()   // <-- allow login/register
-                .anyRequest().authenticated()
-            )
-            .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            );
-
-        return http.build();
-    }
 
 }
