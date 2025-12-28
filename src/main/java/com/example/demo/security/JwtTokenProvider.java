@@ -2,72 +2,74 @@ package com.example.demo.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.Date;
 
 public class JwtTokenProvider {
 
-    private final String secretKey;
-    private final long validityInMs;
     private final Key key;
+    private final long validityInMs;
 
-    public JwtTokenProvider(String secretKey, long validityInMs) {
-        this.secretKey = secretKey;
+    // STRICT constructor
+    public JwtTokenProvider(String secret, long validityInMs) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
         this.validityInMs = validityInMs;
-        this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
-    // 🔥 Extract token from "Authorization: Bearer <token>"
-    public String resolveToken(HttpServletRequest request) {
-        String bearer = request.getHeader("Authorization");
-        if (bearer != null && bearer.startsWith("Bearer ")) {
-            return bearer.substring(7);
-        }
-        return null;
-    }
+    public String generateToken(Authentication authentication,
+                                Long userId,
+                                String email,
+                                String role) {
 
-    // 🔥 Generate JWT Token
-    public String generateToken(String username) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + validityInMs);
 
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(String.valueOf(userId))
+                .claim("userId", userId)
+                .claim("email", email)
+                .claim("role", role)
                 .setIssuedAt(now)
                 .setExpiration(expiry)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // 🔥 Validate token
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token);
             return true;
-        } catch (JwtException | IllegalArgumentException e) {
+        } catch (Exception ex) {
             return false;
         }
     }
 
-    // 🔥 Extract username from token
-    public String getUsernameFromToken(String token) {
+    public Long getUserIdFromToken(String token) {
+        Claims claims = getClaims(token);
+        if (claims.get("userId") != null) {
+            return claims.get("userId", Long.class);
+        }
+        return Long.valueOf(claims.getSubject());
+    }
+
+    public String getEmailFromToken(String token) {
+        return getClaims(token).get("email", String.class);
+    }
+
+    public String getRoleFromToken(String token) {
+        return getClaims(token).get("role", String.class);
+    }
+
+    private Claims getClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
-    }
-
-    // 🔥 Create temporary UserDetails (for Spring Security)
-    public UserDetails getUserDetails(String username) {
-        return User.withUsername(username)
-                .password("") // password not needed here for JWT check
-                .roles("ADMIN")
-                .build();
+                .getBody();
     }
 }
