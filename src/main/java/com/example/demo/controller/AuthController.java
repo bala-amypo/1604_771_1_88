@@ -28,7 +28,6 @@ public class AuthController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    // ✅ REGISTER (unchanged)
     @PostMapping("/register")
     public User register(@RequestBody RegisterRequest request) {
 
@@ -43,7 +42,6 @@ public class AuthController {
         return userService.register(user);
     }
 
-    // 🔐 LOGIN (RETURNS TOKEN)
     @PostMapping("/login")
     public JwtResponse login(@RequestBody LoginRequest request) {
 
