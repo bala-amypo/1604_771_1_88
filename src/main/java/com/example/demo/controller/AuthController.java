@@ -64,7 +64,6 @@ public class AuthController {
                 user.getRole()
         );
 
-        // 4️⃣ RETURN TOKEN (IMPORTANT)
         return new JwtResponse(token);
     }
 }
