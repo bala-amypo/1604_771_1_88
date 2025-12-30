@@ -45,7 +45,6 @@ public class AuthController {
     @PostMapping("/login")
     public JwtResponse login(@RequestBody LoginRequest request) {
 
-        // 1️⃣ Authenticate credentials
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -53,13 +52,11 @@ public class AuthController {
                 )
         );
 
-        // 2️⃣ Fetch user from DB
         User user = userService.login(
                 request.getEmail(),
                 request.getPassword()
         );
 
-        // 3️⃣ Generate JWT token
         String token = jwtTokenProvider.generateToken(
                 authentication,
                 user.getId(),
